@@ -1,0 +1,54 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.main {
+    padding: 8px; 
+    max-width: 800px;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+}
+
+.header {
+    border: 1px solid gray;
+}
+
+.header h4 {
+    margin: 8px; 
+}
+
+.header ul {
+    margin: 10px;
+}
+
+.header .site_link {
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;    
+}
+
+.game {
+    position: relative;
+    border: 1px solid gray;
+    padding: 20px;
+    flex: 0 1 auto;
+    /* flex */
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+}
+
+
+
+
