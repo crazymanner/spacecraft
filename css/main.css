@@ -17,7 +17,6 @@ html, body {
     margin: 0 auto;
     display: flex;
     flex-flow: column nowrap;
-    justify-content: center;
 }
 
 .header {
@@ -40,14 +39,25 @@ html, body {
 
 .game {
     position: relative;
-    border: 1px solid gray;
+    border: 1px solid grey;
     padding: 20px;
-    flex: 0 1 auto;
-    /* flex */
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
+    flex: 0 1 100%;
+    background: black url("../img/bg/bg1.png") repeat;
+    background-position: 0px 0px;
+    animation: bgFlow 1100s linear 0s infinite;
 }
+
+@keyframes bgFlow {
+    0% {background-position: 0px 0px;}
+    100%{background-position: 0px 10000px;}
+}
+
+.game #ship {
+    position: absolute;
+    width: 115px;
+    height: auto;
+}
+
 
 
 
