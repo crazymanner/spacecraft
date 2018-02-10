@@ -38,6 +38,7 @@ html, body {
 }
 
 .game {
+    overflow: hidden;
     position: relative;
     border: 1px solid grey;
     padding: 20px;
