@@ -1,34 +1,33 @@
 var game = document.getElementById('game');
+var rockContainer = document.getElementById('rock_container');
 var ship = document.getElementById('ship');
-var pw = game.offsetWidth;
-var ph = game.offsetHeight;
-var sw = ship.offsetWidth;
-var sh = ship.offsetHeight;
+var gameWidth = game.offsetWidth;
+var gameHeight = game.offsetHeight;
+var shipWidth = ship.offsetWidth;
+var shipHeight = ship.offsetHeight;
 var capture = false;
 
 function onResize(e) {
   var x = parseInt(ship.style.left);
   var y = parseInt(ship.style.top);
   console.log(y);
-  pw = game.offsetWidth;
-  ph = game.offsetHeight;
-  if (ph < y + sh) {
-    var ny = (ph - sh);
+  gameWidth = game.offsetWidth;
+  gameHeight = game.offsetHeight;
+  if (gameHeight < y + shipHeight) {
+    var ny = (gameHeight - shipHeight);
     if (ny < 0) { ny = 0; }
     ship.style.top = ny + 'px';
   }
-  if (x > pw - sw) {
-    var nw = pw - sw
+  if (x > gameWidth - shipWidth) {
+    var nw = gameWidth - shipWidth;
     if (nw < 0) { nw = 0; }
     ship.style.left = nw + 'px';
   }
 }
 
-function initGame() {
-  console.log("game size : ", pw, ph);
-  console.log("ship size : ", sw, sh);
-  ship.style.left = (pw/2 - sw/2) + 'px';
-  ship.style.top = (ph - sh - 30) + 'px';
+function setShipPos() {
+  ship.style.left = (gameWidth/2 - shipWidth/2) + 'px';
+  ship.style.top = (gameHeight - shipHeight - 30) + 'px';
 }
 
 // 키입력 움직임
@@ -55,10 +54,10 @@ function moveKey(e) {
       y += speed;
       break;
   }
-  if (0 < x && x < pw - sw) {
+  if (0 < x && x < gameWidth - shipWidth) {
     ship.style.left = x + 'px';
   }
-  if (0 < y && y < ph - sh) {
+  if (0 < y && y < gameHeight - shipHeight) {
     ship.style.top = y + 'px';    
   }
 }
@@ -83,20 +82,54 @@ function moveMouse(e) {
   var nl = parseInt(ship.style.left);
   var nt = parseInt(ship.style.top);
   if (capture) {
-    var nx = (mx - sw/2);
+    var nx = (mx - shipWidth/2);
     if (nx < 0) { nx = 0; }
-    if (nl + sw > pw) { nx = pw - sw; }
-    var ny = (my - sh/2);
+    if (nl + shipWidth > gameWidth) { nx = gameWidth - shipWidth; }
+    var ny = (my - shipHeight/2);
     if (ny < 0) { ny = 0; }
-    if (nt + sh > ph) { ny = ph - sh; }
+    if (nt + shipHeight > gameHeight) { ny = gameHeight - shipHeight; }
     ship.style.left = nx  + 'px';
     ship.style.top = ny + 'px';
   }
 }
 
+function setRocks() {
+  for (var i = 0; i < 5; i++) {
+    var rock = document.createElement('img');
+    rock.src = '../img/rock/04.png';
+    rock.classList.add('rock');
+    rock.style.top = '-200px';
+    rock.style.left = Math.floor(Math.random() * gameWidth) + 'px';
+    rock.dataset.speed = Math.floor(Math.random() * 30) + 20;
+    rockContainer.appendChild(rock);
+  }
+}
 
+function moveRocks() {
+  var rocks = document.getElementsByClassName('rock');
+  for (var i = 0; i < rocks.length; i++) {
+    var rock = rocks[i]; 
+    var top = parseInt(rock.style.top);
+    if (rock.style.visibility === "hidden") {
+      rock.style.visibility = 'visible';    
+    }
+    top += parseInt(rock.dataset.speed);
+    if (top > gameHeight) {
+      top = -200;
+      rock.style.visibility = 'hidden';
+      rock.style.left = Math.floor(Math.random() * gameWidth) + 'px';      
+    }
+    rock.style.top = top + 'px';
+  }
+}
 
-initGame();
+// main process
+setShipPos();
+setRocks();
+
+setInterval(moveRocks, 100);
+
+// event
 document.onkeydown = moveKey;
 ship.onmousedown = moveMouseDown;
 document.onmouseup = moveMouseUp;
