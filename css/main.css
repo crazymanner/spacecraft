@@ -63,7 +63,7 @@ html, body {
     left: 0px;
     width: 115px;
     height: auto;
-    transition: top 100ms;
+    transition: top 100ms, left 100ms;
 }
 
 .game #ship {
@@ -72,7 +72,20 @@ html, body {
     height: auto;
 }
 
+.game #debug {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: white;
+}
 
+.game #gametime {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: white;
+    font-size: 25px;
+}
 
 
 
