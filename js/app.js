@@ -106,7 +106,7 @@ function addRock() {
 
   var rock = document.createElement('img');
   var rockImg = Math.floor(Math.random() * 4) + 1;
-  rock.src = '../img/rock/' + rockImg + '.png';
+  rock.src = '/img/rock/' + rockImg + '.png';
   rock.classList.add('rock');
   rock.style.top = '-200px';
   rock.style.left = Math.floor(Math.random() * gameWidth) + 'px';
