@@ -10,7 +10,7 @@ html, body {
 }
 
 .main {
-    padding: 8px; 
+    padding: 0px; 
     max-width: 800px;
     width: 100%;
     height: 100%;
@@ -19,19 +19,32 @@ html, body {
     flex-flow: column nowrap;
 }
 
-.header {
-    border: 1px solid gray;
+.info_icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: white;
 }
 
-.header h4 {
+#info {
+    display: none;
+    border: 1px solid gray;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: grey;
+}
+
+#info h4 {
     margin: 8px; 
 }
 
-.header ul {
+#info ul {
     margin: 10px;
 }
 
-.header .site_link {
+#info .site_link {
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;    

@@ -202,6 +202,16 @@ function replayGame() {
   gameOver = false;
 }
 
+function showInfo() {
+  var info = document.getElementById('info');
+  info.style.display = 'block';
+}
+
+function hideInfo() {
+  var info = document.getElementById('info');
+  info.style.display = 'none';
+}
+
 // main process
 setShipPos();
 setRocks();
