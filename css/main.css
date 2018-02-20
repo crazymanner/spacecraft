@@ -87,5 +87,21 @@ html, body {
     font-size: 25px;
 }
 
+.game #replay {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: red;
+    background-color: rgb(0, 0, 0);
+    padding: 40px;
+    border: 1px solid rgb(143, 0, 0);
+    box-shadow: 7px 6px 5px rgb(141, 0, 0);
+}
 
+.game #replay p {
+    font-size: 60px;
+}
 

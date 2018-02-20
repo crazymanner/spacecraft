@@ -24,10 +24,16 @@
         <div class="game" id="game">
             <div id="rock_container"></div>
             <img id="ship" src="img/ship/ship-blue.png">
-            <div id="debug"></div>
+            <div id="debug" style="display: none;"></div>
             <div id="gametime">0</div>
+            <div id="replay" onclick="replayGame()">
+                <p>다시하기</p>  
+                <i class="fas fa-redo fa-3x"></i>
+            </div>
         </div>
     </div>
+    <!-- audio -->
+    <audio id="sound_gameover" src="sound/gameover.wav"></audio>
 
     <script src="js/app.js"></script>
 </body>

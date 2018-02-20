@@ -2,18 +2,19 @@ var game = document.getElementById('game');
 var rockContainer = document.getElementById('rock_container');
 var ship = document.getElementById('ship');
 var debug = document.getElementById('debug');
+var replay = document.getElementById('replay');
+var gametime = document.getElementById('gametime');
 var gameWidth = game.offsetWidth;
 var gameHeight = game.offsetHeight;
 var shipWidth = ship.offsetWidth;
 var shipHeight = ship.offsetHeight;
 var capture = false;
-var gametime = document.getElementById('gametime');
 var gameTick = 0;
+var gameOver = false;
 
 function onResize(e) {
   var x = parseInt(ship.style.left);
   var y = parseInt(ship.style.top);
-  console.log(y);
   gameWidth = game.offsetWidth;
   gameHeight = game.offsetHeight;
   if (gameHeight < y + shipHeight) {
@@ -36,7 +37,6 @@ function setShipPos() {
 
 // 키입력 움직임
 function moveKey(e) {
-  console.log(e.keyCode);
   var x = parseInt(ship.style.left);
   var y = parseInt(ship.style.top);
   var speed = 40;
@@ -79,6 +79,8 @@ function moveEnd(e) {
 }
 
 function moveShip(e) {
+  if(gameOver) { return; }
+
   var gameLeft = game.offsetLeft;
   var gameTop = game.offsetTop;
   var posX = e.clientX || e.targetTouches[0].pageX;
@@ -100,14 +102,18 @@ function moveShip(e) {
 }
 
 function addRock() {
+  if(gameOver) { return; }
+
   var rock = document.createElement('img');
-  rock.src = '../img/rock/04.png';
+  var rockImg = Math.floor(Math.random() * 4) + 1;
+  rock.src = '../img/rock/' + rockImg + '.png';
   rock.classList.add('rock');
   rock.style.top = '-200px';
   rock.style.left = Math.floor(Math.random() * gameWidth) + 'px';
-  rock.style.width = (Math.floor(Math.random() * gameWidth/10) + gameWidth/10) + 'px';
+  rock.style.width = (Math.floor(Math.random() * gameWidth/12) + gameWidth/20) + 'px';
   rock.dataset.speed = Math.floor(Math.random() * 30) + 20;
   rock.dataset.direction = Math.floor(Math.random() * 20) - 10;
+  rock.dataset.follow = (Math.random() * 10 < 2);
   rockContainer.appendChild(rock);
 }
 
@@ -116,16 +122,31 @@ function setRocks() {
 }
 
 function moveRocks() {
+  if(gameOver) { return; }
+
   var rocks = document.getElementsByClassName('rock');
   for (var i = 0; i < rocks.length; i++) {
     var rock = rocks[i]; 
     var top = parseInt(rock.style.top);
     var left = parseInt(rock.style.left);
+    var shipLeft = parseInt(ship.style.left);
+    var shipTop = parseInt(ship.style.top);
     if (rock.style.visibility === "hidden") {
       rock.style.visibility = 'visible';
     }
     top += parseInt(rock.dataset.speed);
-    left += parseInt(rock.dataset.direction);
+    if (rock.dataset.follow == "true") {
+      if (left < shipLeft) {
+        left += gameWidth/25;
+        if (left > shipLeft) { left = shipLeft; }
+      } else if (left > shipLeft) {
+        left -= gameWidth/25;
+        if (left < shipLeft) { left = shipLeft; }
+      }
+    } else {
+      left += parseInt(rock.dataset.direction);
+    }
+
     if (top > gameHeight) {
       top = -200;
       rock.style.visibility = 'hidden';
@@ -136,17 +157,50 @@ function moveRocks() {
         rock.dataset.direction = Math.floor(Math.random() * -10) + 5;
       }
     }
+
     rock.style.top = top + 'px';
     rock.style.left = left + 'px';
+    // 충돌체크
+    if(isCrash(left, top, rock.offsetWidth, rock.offsetHeight, shipLeft, shipTop, ship.offsetWidth, ship.offsetHeight)) {
+      gameOver = true;
+      document.getElementById("sound_gameover").play();
+      replay.style.display = 'block';
+    } 
   }
 }
 
+function isCrash(rockLeft, rockTop, rockWidth, rockHeight, shipLeft, shipTop, shipWidth, shipHeight) {
+  var rockRight = rockLeft + rockWidth;
+  var rockBottom = rockTop + rockHeight;
+  var shipRight = shipLeft + shipWidth;
+  var shipBottom = shipTop + shipHeight;
+
+  if(rockRight < shipLeft || shipRight < rockLeft || rockBottom < shipTop || shipBottom < rockTop ) { return false; }
+  var crashConditionWidth = shipWidth/2;
+  var crashConditionHeight = shipHeight/2;
+  var crashWidth = (shipLeft < rockRight) ? (rockRight - shipLeft) : (shipRight - rockLeft);
+  var crashHeight = (shipTop < rockBottom) ? (rockBottom - shipTop) : (shipBottom - rockTop);
+
+  if(crashWidth > crashConditionWidth && crashHeight > crashConditionHeight) { return true; }
+
+  return false;
+}
+
 function setGameTime() {
+  if(gameOver) { return; }
+
   gameTick += 0.1;
   gametime.innerHTML = gameTick.toFixed(1);
 }
 
-
+function replayGame() {
+  gametime.innerHTML = '0';
+  gameTick = 0;
+  rockContainer.innerHTML = '';
+  setShipPos();
+  replay.style.display = 'none';
+  gameOver = false;
+}
 
 // main process
 setShipPos();
@@ -166,10 +220,3 @@ ship.onmousedown = moveStart;
 game.onmousemove = moveShip;
 document.onmouseup = moveEnd;
 
-
-// 남은 것
-
-// 돌 움직임 - 유도탄
-
-// 충돌처리
-// 앤딩
