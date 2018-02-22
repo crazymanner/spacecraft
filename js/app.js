@@ -1,13 +1,20 @@
+// project
+//var projectPath = '../';
+var projectPath = '/spacecraft/';
+  
+//getElementBy
 var game = document.getElementById('game');
 var rockContainer = document.getElementById('rock_container');
 var ship = document.getElementById('ship');
 var debug = document.getElementById('debug');
 var replay = document.getElementById('replay');
 var gametime = document.getElementById('gametime');
+//offset
 var gameWidth = game.offsetWidth;
 var gameHeight = game.offsetHeight;
 var shipWidth = ship.offsetWidth;
 var shipHeight = ship.offsetHeight;
+//subcode
 var capture = false;
 var gameTick = 0;
 var gameOver = false;
@@ -106,7 +113,7 @@ function addRock() {
 
   var rock = document.createElement('img');
   var rockImg = Math.floor(Math.random() * 4) + 1;
-  rock.src = '/spacecraft/img/rock/' + rockImg + '.png';
+  rock.src = projectPath + 'img/rock/' + rockImg + '.png';
   rock.classList.add('rock');
   rock.style.top = '-200px';
   rock.style.left = Math.floor(Math.random() * gameWidth) + 'px';
@@ -201,6 +208,8 @@ function replayGame() {
   replay.style.display = 'none';
   gameOver = false;
 }
+
+//info
 
 function showInfo() {
   var info = document.getElementById('info');
